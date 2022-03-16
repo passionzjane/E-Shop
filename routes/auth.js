@@ -1,7 +1,8 @@
 const express = require('express');
 
 const {getLogin, postLogin, postLogout,
-     getSignup, postSignup, getReset} = require('../controllers/auth');
+     getSignup, postSignup, getReset,
+     postReset} = require('../controllers/auth');
 
 const router = express.Router();
 
@@ -16,6 +17,9 @@ router.post('/login', postLogin);
 router.post('/signup', postSignup);
 
 router.post('/logout', postLogout);
+
+router.post("/reset", postReset);
+
 
 
 
