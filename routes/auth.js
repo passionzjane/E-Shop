@@ -15,7 +15,11 @@ router.get("/reset", getReset);
 
 router.post('/login', postLogin);
 
-router.post('/signup', check('email').isEmail(), postSignup);
+router.post('/signup', 
+check('email')
+.isEmail()
+.withMessage('Please enter a valid email or password'), 
+postSignup);
 
 router.post('/logout', postLogout);
 
