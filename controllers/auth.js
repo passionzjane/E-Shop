@@ -2,6 +2,9 @@ const crypto = require('crypto')
 
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
+//const {validationResult } = require('express-validatior')
+const { validationResult, check } = require("express-validator");
+
 
 const User = require('../models/user');
 
@@ -72,12 +75,21 @@ exports.postLogin = (req, res, next) => {
           res.redirect('/login')
         })
        
-     })
+     }) 
      .catch((err) => console.log(err));
 };
 
 exports.postSignup = (req, res, next) => {
   const { email, password, confirmPassword} = req.body
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.array())
+    return res.status(422).render("auth/signup", {
+      path: "/signup",
+      pageTitle: "Signup",
+      errorMessage: errors.array(),
+    });
+  }
   User.findOne({email: email}) 
     .then(userDoc => {
       if (userDoc) {

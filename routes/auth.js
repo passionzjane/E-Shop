@@ -1,4 +1,5 @@
 const express = require('express');
+const { check} = require('express-validator');
 
 const {getLogin, postLogin, postLogout,
      getSignup, postSignup, getReset,
@@ -14,7 +15,7 @@ router.get("/reset", getReset);
 
 router.post('/login', postLogin);
 
-router.post('/signup', postSignup);
+router.post('/signup', check('email').isEmail(), postSignup);
 
 router.post('/logout', postLogout);
 
