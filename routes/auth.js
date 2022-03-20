@@ -18,7 +18,13 @@ router.post('/login', postLogin);
 router.post('/signup', 
 check('email')
 .isEmail()
-.withMessage('Please enter a valid email or password'), 
+.withMessage('Please enter a valid email or password')
+.custom((value, {req }) => {
+     if (value === 'tony@mail.com') {
+          throw new Error('This email address is forbidden.')
+     }
+     return true;
+}),
 postSignup);
 
 router.post('/logout', postLogout);
