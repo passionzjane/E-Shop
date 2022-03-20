@@ -90,13 +90,8 @@ exports.postSignup = (req, res, next) => {
       errorMessage: errors.array()[0].msg,
     });
   }
-  User.findOne({email: email}) 
-    .then(userDoc => {
-      if (userDoc) {
-         req.flash("error", "E-mail already exist, please pick another!");
-        return res.redirect('/signup')
-      }
-      return bcrypt
+ 
+      bcrypt
         .hash(password, 12)
         .then((hashedPassword) => {
           const user = new User({
@@ -115,11 +110,7 @@ exports.postSignup = (req, res, next) => {
              html: '<h1> You are successful</h1>'
              })  
         })
-        .catch(err => {
-          console.log(err)
-        })
-    })
-   
+        
     .catch(err => {
       console.log(err)
   });
