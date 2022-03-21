@@ -1,20 +1,18 @@
-const path = require('path');
+const path = require("path");
 
-const express = require('express');
-const {body} = require('express-validator')
+const express = require("express");
+const { body } = require("express-validator/check");
 
-const {getAddProduct, getProducts,postAddProduct,
-    getEditProduct, postEditProduct, postDeleteProduct,
-} = require('../controllers/admin');
-const isAuth = require('../middleware/is-auth')
+const adminController = require("../controllers/admin");
+const isAuth = require("../middleware/is-auth");
 
 const router = express.Router();
 
 // /admin/add-product => GET
-router.get('/add-product', isAuth, getAddProduct);
+router.get("/add-product", isAuth, adminController.getAddProduct);
 
 // /admin/products => GET
-router.get("/products", isAuth, getProducts);
+router.get("/products", isAuth, adminController.getProducts);
 
 // /admin/add-product => POST
 router.post(
@@ -26,23 +24,23 @@ router.post(
     body("description").isLength({ min: 5, max: 400 }).trim(),
   ],
   isAuth,
-  postAddProduct
+  adminController.postAddProduct
 );
 
-router.get(
-  "/edit-product/:productId",
+router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
+
+router.post(
+  "/edit-product",
   [
-    body("title").isAlphanumeric().isLength({ min: 3 }).trim(),
+    body("title").isString().isLength({ min: 3 }).trim(),
     body("imageUrl").isURL(),
     body("price").isFloat(),
     body("description").isLength({ min: 5, max: 400 }).trim(),
   ],
   isAuth,
-  getEditProduct
+  adminController.postEditProduct
 );
 
-router.post("/edit-product", isAuth, postEditProduct);
-
-router.post("/delete-product", isAuth, postDeleteProduct);
+router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 
 module.exports = router;
