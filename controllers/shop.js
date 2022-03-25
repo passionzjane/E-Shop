@@ -8,7 +8,7 @@ const Order = require('../models/order');
 const User = require("../models/user");
 
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 1;
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -45,11 +45,11 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-const page = req.query.page;
+const page = +req.query.page || 1;
 let totalItems
 
 Product.find()
-.countDocument()
+.countDocuments()
 .then(numProducts => {
   totalItems = numProducts;
   return Product.find()
@@ -61,7 +61,7 @@ Product.find()
       prods: products,
       pageTitle: "Shop",
       path: "/",
-      totalProducts: totalItems,
+      currentPage: page,
       hasNextpage: ITEMS_PER_PAGE * page < totalItems,
       hasPreviousPage: page > 1,
       nextPage: page + 1,
