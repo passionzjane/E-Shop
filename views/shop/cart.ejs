@@ -8,6 +8,7 @@
             <% if (products.length > 0) { %>
                 <ul class="cart__item-list">
                     <% products.forEach(p => { %>
+                        <% if (p.productId) { %>
                         <li class="cart__item">
                             <h1><%= p.productId.title %></h1>
                             <h2>Quantity: <%= p.quantity %></h2>
@@ -17,14 +18,16 @@
                                 <button class="btn danger" type="submit">Delete</button>
                             </form>
                         </li>
+                        <% } %>
                     <% }) %>
                 </ul>
                 <hr>
                 <div class="centered">
-                    <form action="/create-order" method="POST">
+                    <!--<form action="/create-order" method="POST">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button type="submit" class="btn">Order Now!</button>
-                    </form>
+                    </form>-->
+                    <a class="btn" href="/checkout">Order Now!</a>
                 </div>
                 
             <% } else { %>
